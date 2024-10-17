@@ -1,6 +1,6 @@
 ---
 title: "Lab7"
-author: "Your Name"
+author: "Sabrina Xu"
 date: "2024-10-17"
 output: "github_document"
 ---
@@ -13,10 +13,9 @@ library(ggstatsplot)
 library(performance)
 library(sjPlot)
 
-ex <- read_sav("C:/Users/Colin/Documents/GitHub/Website/Lab7/ex.sav")
+ex <- read_sav("/Users/xushimin/Documents/GitHub/Lab7/ex.sav")
 
-lab7<-read.csv("C:/Users/Colin/Documents/GitHub/Website/Lab7/lab7.csv")
-
+lab7<-read.csv("/Users/xushimin/Documents/GitHub/Lab7/lab7.csv")
 
 
 ```
@@ -70,15 +69,40 @@ plot_model(model,  type ="est",  show.values = TRUE, vline.color = "#1B191999", 
 
 
 # Q1: Use the Corr or the ggcorrmat function to plot the correlation between all variables. Which personality traits are correlated with satisfaction with life and which one is not? 
+
+All the personality traits except for openness are correlated with satisfaction with life because p value is smaller than 0.05. 
 ```{r}
+
+Corr(lab7)
+
+
 
 ```
 
 # Q2: Run a multiple regression using the Big 5 personality traits to predict satisfaction with life and plot the results
 ```{r}
 #for this lab assignment you would assume assumptions are met, but for your own analysis, you will need to examine assumptions carefully
+#step 1: build a model
+model<-lm(SWL ~ Extraversion + Agreeableness + Conscientiousness + EmotionalStability + Openness, data = lab7)
+
+
+#step 2: check the assumptions
+check_model(model)
+
+#step 3: summarize results; add ,std = TRUE if you want to get standardized coefficients
+model_summary(model)
+
+
+# or using the tab_model functionl; add  ,show.std = TRUE if you want to get standardized coefficients
+tab_model(model)
+
+#step 4: plot the results; change type ="est" to type = "std" if you want to plot the standardized coefficients
+plot_model(model,  type ="est",  show.values = TRUE, vline.color = "#1B191999", line.size = 1.5, dot.size = 2.5, colors = "blue") + theme_bruce()
 
 
 ```
 
 # Q3: Interpret the R2. Which personality trait(s) can explain unique variance in satisfaction with life when controlling for each other, and which ones cannot? If someone asks you for advice on how to improve life satisfaction, based on your results, which personality trait would you recommend them to change and why? 
+
+the 13.8% variance of satisfaction with life can be explained by personality traits. Extraversion, emotional stability and openness can explain unique variance in swl. If someone want to improve life satisfaction, I recommend them to improve emotional stability and try to become more extrovert since this two personality traits positively correlated with swl. By contrast, they could reduce the openness to improve swl since this trait is negatively correlated with swl.
+
